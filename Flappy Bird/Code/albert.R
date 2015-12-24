@@ -2,7 +2,7 @@
 library(ggplot2)
 
 # Read data
-setwd('Flappy Bird')
+setwd('Data')
 albert <- read.table("scores_Albert.txt", quote="\"")
 albert$index = 1:nrow(albert)
 albert$highscore = 0
@@ -31,6 +31,18 @@ ggplot(data=albert, aes(Index, Score)) +
   #geom_smooth() +
   scale_colour_manual(values=cbPalette, labels=c("New Score","New High Score")) + 
   scale_shape_manual(values=c(1,9), labels=c("New Score","New High Score")) + 
+  scale_y_continuous(expand = c(0,0), limits=c(0, 130)) +
+  labs(title = "Albert's Scores", x = "Game Number") +
+  theme(panel.background = element_blank(),
+        axis.line.y = element_line(colour = "black"),
+        legend.key = element_blank(),
+        legend.title = element_blank()) 
+
+# Scatter plot with smoothed running average
+ggplot(data=albert, aes(Index, Score)) + 
+  geom_point(color = "#999999") + 
+  geom_smooth(color = "#0072B2", se=F, size=2) +
+  stat_quantile(quantiles=0.5,formula=y~x,colour="#009E73", size=2) +
   scale_y_continuous(expand = c(0,0), limits=c(0, 130)) +
   labs(title = "Albert's Scores", x = "Game Number") +
   theme(panel.background = element_blank(),
